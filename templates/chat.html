@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>聊天室</title>
+    <script src="https://code.jquery.com/jquery-3.0.0.min.js"></script>
+</head>
+<body>
+    <h1>1024聊天室</h1>
+    <p>当前账号: {{ username }}</p>
+    <p>当前在线用户: {{ userlist }}#~刷新可获取实时在线用户~#</p>
+    <div id="chat" style="width:750px; height:400px; border:2px solid #dddddd;overflow: auto;">
+        <!--聊天窗口-->
+
+    </div>
+    <!--输入信息窗口-->
+    <div class="input">
+        <input type="text" name="content" id="content">
+        <input type="button" id="btn" value="提交">
+    </div>
+
+    <script>
+        <!--建立连接-->
+        var websocket = new WebSocket('ws://222.20.25.67:80/chat/')
+        <!--获取后端返回的数据-->
+        websocket.onmessage = function(e){
+            console.log(e.data)
+            $('#chat').append('<br>')
+            $('#chat').append(e.data)
+        }
+        $('#btn').click(function(){
+            <!--向后端发送数据-->
+            var contentt = $('#content').val()
+            websocket.send(contentt)
+            $('#content').val('')
+        });
+
+
+    </script>
+
+</body>
+</html>
